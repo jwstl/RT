@@ -1,0 +1,159 @@
+<h1>Client Relationship Personal Report</h1>
+
+<h4 class="">Select the name from the dropdown below:</h4>
+<p style="margin-bottom: 30px;">
+    <select class='form-control' ng-model="name" style="width: 300px;" ng-change="processSummaryInfo(name)">
+        <option ng-repeat="(nn,object) in primaryAccountability" value="{{nn}}">{{nn}}</option>
+    </select>
+</p>
+
+<div class='row' ng-show="name"  ng-if="name">
+    <div class="col-sm-6">
+        <table class="table table-condensed">
+            <tr>
+                <th>Count of Relationships Owned:</th>
+                <td>{{primaryAccountability[name].count}}</td>
+            </tr>
+            <tr>
+                <th>Count of Next Step Ownership:</th>
+                <td>
+                    
+                </td>
+<!--                <td>{{ownernextmeetingCount}}</td>-->
+            </tr>
+            <tr>
+                <th>Perfomance Score</th>
+                <td>{{mainPerfomanceScore | number:2}}</td>
+            </tr>
+            <tr>
+                <td>
+                    <table class='table-condensed'>
+                        <tr>
+                            <td>Upstream Actual:</td>
+                            <td>{{upStreamAct}}</td>
+                        </tr>
+                         <tr>
+                            <td>Downstream Actual:</td>
+                            <td>{{downStreamAct}}</td>
+                        </tr>
+                         <tr>
+                            <td>ITSO Actual:</td>
+                            <td>{{ITSOAct}}</td>
+                        </tr>
+                         <tr>
+                            <td>Trading Actual:</td>
+                            <td>{{tradingACt}}</td>
+                        </tr>
+                         <tr>
+                            <td>P&T Actual:</td>
+                            <td>{{PTAct}}</td>
+                        </tr>
+                        
+                         <tr>
+                            <td>Technology Actual:</td>
+                            <td>{{technologyAct}}</td>
+                        </tr>
+                         <tr>
+                            <td>Consumer ES Actual:</td>
+                            <td>{{ConsumerAct}}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table class='table-condensed'>
+                        <tr>
+                            <td>Upstream Performance</td>
+                            <td>{{(upStreamAct / 8) * 100}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Downstream Performance</td>
+                            <td>{{(downStreamAct / 8) * 100}}%</td>
+                        </tr>
+                        <tr>
+                            <td>ITSO Performance</td>
+                            <td>{{(ITSOAct / 8) * 100}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Trading Performance</td>
+                            <td>{{(tradingACt / 8) * 100}}%</td>
+                        </tr>
+                        <tr>
+                            <td>P&T Performance</td>
+                            <td>{{(PTAct / 8) * 100}}%</td>
+                        </tr>
+                        <tr>
+                            <td>Technology Performance</td>
+                            <td>{{(technologyAct / 8) * 100}}%</td>
+                        </tr>
+                          <tr>
+                            <td>Consumer ES Perfomance</td>
+                            <td>{{(ConsumerAct / 8) * 100}}%</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-offset-2 col-sm-4">
+        <div class="well text-center">
+            <h3>
+                <span style='font-weight: 200'>Relationships Owned Score:</span> <br/>
+                {{((primaryAccountability[name].count / (8 * 6)) * 100).toFixed(2)}}%
+            </h3>
+        </div>
+    </div>
+
+</div>
+
+
+<div ng-show="name" ng-if="name">
+    <table class='table table-condensed table-striped'>
+        <tr>
+            <th>Segment</th>
+            <th>Relationships I Own
+                <br/>by Segment</th>
+            <th>Owners for
+                <br/>Missed Targets</th>
+            <th>Date Tracker Was
+                <br/>Last Updated</th>
+            <th class='text-center'>Upkeep Trend</th>
+        </tr>
+
+        <tr ng-repeat="row in data| filter: {'primaryaccountability': name}">
+            <td>{{row.Segment}}</td>
+            <td>{{row.Title}}</td>
+            <td class='text-danger'>{{row.tier}}</td>
+<!--            <td><span ng-if="row.missedTargets" class='text-danger'>{{name}}</span></td>-->
+            <td>{{(row.Modified)}}</td>
+            <td class='text-center' ng-init="calculateFromLastUpdate(row);" >
+                <span ng-if="daysFromLastUpdate > 30"><i class="text-danger fa fa-times-circle"></i></span>
+                <span ng-if="daysFromLastUpdate < 30 && daysFromLastUpdate > 14"><i class="text-warning fa fa-times-circle"></i></span>
+                <span ng-if="daysFromLastUpdate < 14"><i class="text-success fa fa-times-circle"></i></span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<h1 ng-show="nextOwnerShips" ng-if="name">My Next Step Ownership</h1>
+<div ng-show="name" ng-if="name">
+    <table class='table table-condensed table-striped'>
+        <tr>
+            <th>Segment</th>
+            <th>Date Tracker Was
+                <br/>Last Updated</th>
+            <th class='text-center'>Upkeep Trend</th>
+        </tr>
+        <tr ng-repeat="nextMeetingData in nextOwnerShips">
+            <td>{{nextMeetingData.Segment}}</td>
+            <td>{{nextMeetingData.Modified}}</td>
+             <td class='text-center' ng-init="calculateFromLastUpdate(nextMeetingData);" >
+                <span ng-if="daysFromLastUpdate > 30"><i class="text-danger fa fa-times-circle"></i></span>
+                <span ng-if="daysFromLastUpdate < 30 && daysFromLastUpdate > 14"><i class="text-warning fa fa-times-circle"></i></span>
+                <span ng-if="daysFromLastUpdate < 14"><i class="text-success fa fa-times-circle"></i></span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<hr/>
+<br/>

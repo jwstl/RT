@@ -1,0 +1,32 @@
+
+<h1>Upcoming Meetings</h1>
+
+
+<ul class="nav nav-tabs" role="tablist" id="upNavs">
+    <li class="active">
+        <a href="javascript:void(0);" ng-click="showSegmentDetail('Trading','trading');" id="upCom_trading">Trading</a></li>
+    <li><a href="javascript:void(0);" ng-click="showSegmentDetail('P&T','pt');" id="upCom_pt">P&T</a></li>
+    <li><a href="javascript:void(0);" ng-click="showSegmentDetail('Upstream','upstream');" id="upCom_upstream">Upstream</a></li>
+    <li><a href="javascript:void(0);" ng-click="showSegmentDetail('ITSO','itso');" id="upCom_itso">ITSO</a></li>
+    <li><a href="javascript:void(0);" ng-click="showSegmentDetail('DS','ds');" id="upCom_ds">DS</a></li>
+    <li><a href="javascript:void(0);" ng-click="showSegmentDetail('GS & ES','gs');" id="upCom_gs">GS & ES</a></li>
+</ul>
+
+
+<hr/>
+<br/>
+<table class="table table-condensed table-striped">
+    <tr>
+        <th>Client Name</th>
+        <th>Primary MD  </th>
+        <th>Meeting Date</th>
+    </tr>
+    <tr ng-repeat="dataMeetings in allMeetings">
+        <td>{{dataMeetings['Title']}}</td>
+        <td>{{dataMeetings['primaryaccountability']}}</td>
+        <td>{{dataMeetings['upcomingdate']}}</td>
+
+    </tr>
+</table>
+
+

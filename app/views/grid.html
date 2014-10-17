@@ -1,0 +1,159 @@
+<h1>Leadership Dashboard Calculations</h1>
+
+<hr/>
+<br/>
+<table class="table table-condensed table-striped">
+    <tr>
+        <th></th>
+        <th>Trading</th>
+        <th>P&T</th>
+        <th>Upstream</th>
+        <th>ITSO</th>
+        <th>DS</th>
+        <th>GS & ES</th>
+    </tr>
+    <!--                <tr>
+                        <td>Total Relationships</td>
+                        <td ng-repeat="item in segments">{{summary[item].totalRelationships}}</td>
+                    </tr>-->
+
+    <tr>
+        <td>Total Owned Relationships</td>
+        <td ng-repeat="item in segments"> <a ng-click="showOwnnedRelationShips(summary[item])" style="cursor: pointer;">{{summary[item].totalOwnedRelationships}}</a></td>
+    </tr>
+    <tr ng-show="selectedOwnedRelationships">
+        <td></td>
+        <td colspan="6">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>Segment</th>
+                    <th>Relationships Owned</th>
+                    <th>Owner Missed Targets</th>
+                    <th>Data Tracker was last updated</th>
+                    <th>Upkeep Trend</th>
+                </tr>
+                <tr ng-repeat="item in selectedOwnedRelationships.ownedRelationships">
+                    <td>{{item.Segment}}</td>
+                    <td>{{item.Title}}</td>
+                    <td>{{item.primaryaccountability}}</td>
+                    <td>{{item.Modified}}</td>
+                    <td class='text-center' ng-init="calculateFromLastUpdate(selectedOwnedRelationships.ownedRelationships);" >
+                        <span ng-if="daysFromLastUpdate > 30"><i class="text-danger fa fa-times-circle"></i></span>
+                        <span ng-if="daysFromLastUpdate < 30 && daysFromLastUpdate > 14"><i class="text-warning fa fa-times-circle"></i></span>
+                        <span ng-if="daysFromLastUpdate < 14"><i class="text-success fa fa-times-circle"></i></span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+    <tr>
+        <td>Performance Score</td>
+        <td ng-repeat="item in segments">{{summary[item].performanceScore}}</td>
+    </tr>
+    <tr>
+        <td>Late Relationships</td>
+        <td ng-repeat="item in segments">
+            <a ng-click="showLateSegmentDetail(summary[item])" style="cursor: pointer;">
+                {{summary[item].totalLateRelationships}}</a></td>
+    </tr>
+    <tr ng-show="selectedSegmentLate">
+        <td></td>
+        <td colspan="6">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>Segment</th>
+                    <th>Relationships Owned</th>
+                    <th>Owner Missed Targets</th>
+                    <th>Data Tracker was last updated</th>
+                    <th>Upkeep Trend</th>
+                </tr>
+                <tr ng-repeat="item in selectedSegmentLate.lateRelationships">
+                    <td>{{item.Segment}}</td>
+                    <td>{{item.Title}}</td>
+                    <td>{{item.primaryaccountability}}</td>
+                    <td>{{item.Modified}}</td>
+                    <td class='text-center' ng-init="calculateFromLastUpdate(selectedSegmentLate.lateRelationships);" >
+                        <span ng-if="daysFromLastUpdate > 30"><i class="text-danger fa fa-times-circle"></i></span>
+                        <span ng-if="daysFromLastUpdate < 30 && daysFromLastUpdate > 14"><i class="text-warning fa fa-times-circle"></i></span>
+                        <span ng-if="daysFromLastUpdate < 14"><i class="text-success fa fa-times-circle"></i></span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+
+</table>
+<br/>
+
+<hr/>
+
+
+<table class="table table-condensed table-striped">
+    <tr>
+        <th></th>
+        <th>Trading</th>
+        <th>P&T</th>
+        <th>Upstream</th>
+        <th>ITSO</th>
+        <th>DS</th>
+        <th>GS & ES</th>
+    </tr>
+    <tr>
+        <td>Total New Relationships</td>
+        <td ng-repeat="item in segments">
+            <a ng-click="showSegmentDetail(summary[item])" style="cursor: pointer;">{{summary[item].totalNewRelationships}}</a></td>
+    </tr>
+    <tr ng-show="selectedSegment" class="slideToggle">
+        <td></td>
+        <td colspan="6">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <th>Segment</th>
+                    <th>Relationships Owned</th>
+                    <th>Primary ACN. Accountable</th>
+                    <th>Next Step Owner</th>
+                </tr>
+                <tr ng-repeat="item in selectedSegment.newRelationships">
+                    <td>{{item.Segment}}</td>
+                    <td>{{item.Title}}</td>
+                    <td>{{item.primaryaccountability}}</td>
+                    <td>{{item.nextmeetingowner}}</td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>Performance Score</td>
+        <td ng-repeat="item in segments">
+            {{summary[item].performanceNewScore}}</td>
+    </tr>
+    <tr>
+        <td>Missed "New Relationship" Target</td>
+        <td ng-repeat="item in segments">
+            <a  style="cursor: pointer;">{{summary[item].totalMissedRelationships}}</a></td>
+    </tr>
+    <!--                <tr ng-show="selectedMissed" class="slideToggle">
+                        <td></td>
+                        <td colspan="6">
+                            <table class="table table-condensed table-striped">
+                                <tr>
+                                    <th>Segment</th>
+                                    <th>Relationships Owned</th>
+                                    <th>Primary ACN. Accountable</th>
+                                    <th>Next Step Owner</th>
+                                </tr>
+                                <tr ng-repeat="item in selectedMissed.missedRelationships">
+                                    <td>{{item.Segment}}</td>
+                                    <td>{{item.Title}}</td>
+                                    <td>{{item.primaryaccountability}}</td>
+                                    <td>{{item.nextmeetingowner}}</td>
+                                </tr>
+                            </table>
+                        </td>
+    
+                    </tr>-->
+</table>
